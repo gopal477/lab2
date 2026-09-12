@@ -27,22 +27,22 @@ This challenge lab has four tasks:
 
 ---
 
-## ⚠️ About the `migration_admin` Username
+## ⚠️ About the `replication_user` Username
 
 Throughout Steps 9–12, you will see:
 
 ```text
-Username: migration_admin
+Username: replication_user
 Password: DMS_1s_cool!
 ```
 
-> **`migration_admin` is the exact username required by this lab's grader - do NOT change it.** The Database Migration Service connection profile and all SQL permission grants must use this exact username. It does not vary between lab sessions.
+> **`replication_user` is the exact username required by this lab's grader - do NOT change it.** The Database Migration Service connection profile and all SQL permission grants must use this exact username. It does not vary between lab sessions.
 
 **However**, if you are adapting this guide for a different lab or your own environment and _do_ need to change the username, use the free online word replacer tool:
 
 🔗 **[textcompare.io/word-replacer](https://textcompare.io/word-replacer)**
 
-Copy the **📋 Quick Copy SQL blocks** found after Step 12 below, paste them into the tool, replace `migration_admin` with your desired username, then copy the result and run it. This avoids manually editing 45+ occurrences by hand.
+Copy the **📋 Quick Copy SQL blocks** found after Step 12 below, paste them into the tool, replace `replication_user` with your desired username, then copy the result and run it. This avoids manually editing 45+ occurrences by hand.
 
 ---
 
@@ -243,11 +243,11 @@ Exit:
 
 ## Step 9 - Create the migration user
 
-> **⚠️ The username `migration_admin` is fixed for this lab - do NOT change it.**
+> **⚠️ The username `replication_user` is fixed for this lab - do NOT change it.**
 > If you need to use a different username for a different environment, use the [word-replacer tool](https://textcompare.io/word-replacer) as described at the top of this guide.
 
 ```text
-Username: migration_admin
+Username: replication_user
 Password: DMS_1s_cool!
 ```
 
@@ -258,9 +258,9 @@ sudo -u postgres psql
 ```
 
 ```sql
-CREATE USER migration_admin PASSWORD 'DMS_1s_cool!';
-ALTER DATABASE orders OWNER TO migration_admin;
-ALTER ROLE migration_admin WITH REPLICATION;
+CREATE USER replication_user PASSWORD 'DMS_1s_cool!';
+ALTER DATABASE orders OWNER TO replication_user;
+ALTER ROLE replication_user WITH REPLICATION;
 \q
 ```
 
@@ -317,42 +317,42 @@ sudo -u postgres psql orders
 ### pglogical schema permissions:
 
 ```sql
-GRANT USAGE ON SCHEMA pglogical TO migration_admin;
-GRANT ALL ON SCHEMA pglogical TO migration_admin;
-GRANT SELECT ON pglogical.tables TO migration_admin;
-GRANT SELECT ON pglogical.depend TO migration_admin;
-GRANT SELECT ON pglogical.local_node TO migration_admin;
-GRANT SELECT ON pglogical.local_sync_status TO migration_admin;
-GRANT SELECT ON pglogical.node TO migration_admin;
-GRANT SELECT ON pglogical.node_interface TO migration_admin;
-GRANT SELECT ON pglogical.queue TO migration_admin;
-GRANT SELECT ON pglogical.replication_set TO migration_admin;
-GRANT SELECT ON pglogical.replication_set_seq TO migration_admin;
-GRANT SELECT ON pglogical.replication_set_table TO migration_admin;
-GRANT SELECT ON pglogical.sequence_state TO migration_admin;
-GRANT SELECT ON pglogical.subscription TO migration_admin;
+GRANT USAGE ON SCHEMA pglogical TO replication_user;
+GRANT ALL ON SCHEMA pglogical TO replication_user;
+GRANT SELECT ON pglogical.tables TO replication_user;
+GRANT SELECT ON pglogical.depend TO replication_user;
+GRANT SELECT ON pglogical.local_node TO replication_user;
+GRANT SELECT ON pglogical.local_sync_status TO replication_user;
+GRANT SELECT ON pglogical.node TO replication_user;
+GRANT SELECT ON pglogical.node_interface TO replication_user;
+GRANT SELECT ON pglogical.queue TO replication_user;
+GRANT SELECT ON pglogical.replication_set TO replication_user;
+GRANT SELECT ON pglogical.replication_set_seq TO replication_user;
+GRANT SELECT ON pglogical.replication_set_table TO replication_user;
+GRANT SELECT ON pglogical.sequence_state TO replication_user;
+GRANT SELECT ON pglogical.subscription TO replication_user;
 ```
 
 ### public schema permissions:
 
 ```sql
-GRANT USAGE ON SCHEMA public TO migration_admin;
-GRANT ALL ON SCHEMA public TO migration_admin;
-GRANT SELECT ON public.distribution_centers TO migration_admin;
-GRANT SELECT ON public.inventory_items TO migration_admin;
-GRANT SELECT ON public.order_items TO migration_admin;
-GRANT SELECT ON public.products TO migration_admin;
-GRANT SELECT ON public.users TO migration_admin;
+GRANT USAGE ON SCHEMA public TO replication_user;
+GRANT ALL ON SCHEMA public TO replication_user;
+GRANT SELECT ON public.distribution_centers TO replication_user;
+GRANT SELECT ON public.inventory_items TO replication_user;
+GRANT SELECT ON public.order_items TO replication_user;
+GRANT SELECT ON public.products TO replication_user;
+GRANT SELECT ON public.users TO replication_user;
 ```
 
 ### Transfer table ownership to migration user:
 
 ```sql
-ALTER TABLE public.distribution_centers OWNER TO migration_admin;
-ALTER TABLE public.inventory_items OWNER TO migration_admin;
-ALTER TABLE public.order_items OWNER TO migration_admin;
-ALTER TABLE public.products OWNER TO migration_admin;
-ALTER TABLE public.users OWNER TO migration_admin;
+ALTER TABLE public.distribution_centers OWNER TO replication_user;
+ALTER TABLE public.inventory_items OWNER TO replication_user;
+ALTER TABLE public.order_items OWNER TO replication_user;
+ALTER TABLE public.products OWNER TO replication_user;
+ALTER TABLE public.users OWNER TO replication_user;
 ```
 
 Exit:
@@ -378,20 +378,20 @@ Switch to the `postgres` database:
 ```
 
 ```sql
-GRANT USAGE ON SCHEMA pglogical TO migration_admin;
-GRANT ALL ON SCHEMA pglogical TO migration_admin;
-GRANT SELECT ON pglogical.tables TO migration_admin;
-GRANT SELECT ON pglogical.depend TO migration_admin;
-GRANT SELECT ON pglogical.local_node TO migration_admin;
-GRANT SELECT ON pglogical.local_sync_status TO migration_admin;
-GRANT SELECT ON pglogical.node TO migration_admin;
-GRANT SELECT ON pglogical.node_interface TO migration_admin;
-GRANT SELECT ON pglogical.queue TO migration_admin;
-GRANT SELECT ON pglogical.replication_set TO migration_admin;
-GRANT SELECT ON pglogical.replication_set_seq TO migration_admin;
-GRANT SELECT ON pglogical.replication_set_table TO migration_admin;
-GRANT SELECT ON pglogical.sequence_state TO migration_admin;
-GRANT SELECT ON pglogical.subscription TO migration_admin;
+GRANT USAGE ON SCHEMA pglogical TO replication_user;
+GRANT ALL ON SCHEMA pglogical TO replication_user;
+GRANT SELECT ON pglogical.tables TO replication_user;
+GRANT SELECT ON pglogical.depend TO replication_user;
+GRANT SELECT ON pglogical.local_node TO replication_user;
+GRANT SELECT ON pglogical.local_sync_status TO replication_user;
+GRANT SELECT ON pglogical.node TO replication_user;
+GRANT SELECT ON pglogical.node_interface TO replication_user;
+GRANT SELECT ON pglogical.queue TO replication_user;
+GRANT SELECT ON pglogical.replication_set TO replication_user;
+GRANT SELECT ON pglogical.replication_set_seq TO replication_user;
+GRANT SELECT ON pglogical.replication_set_table TO replication_user;
+GRANT SELECT ON pglogical.sequence_state TO replication_user;
+GRANT SELECT ON pglogical.subscription TO replication_user;
 ```
 
 Exit:
@@ -413,44 +413,44 @@ Open with: `sudo -u postgres psql orders`
 
 ```sql
 -- Step 9: Create migration user
-CREATE USER migration_admin PASSWORD 'DMS_1s_cool!';
-ALTER DATABASE orders OWNER TO migration_admin;
-ALTER ROLE migration_admin WITH REPLICATION;
+CREATE USER replication_user PASSWORD 'DMS_1s_cool!';
+ALTER DATABASE orders OWNER TO replication_user;
+ALTER ROLE replication_user WITH REPLICATION;
 
 -- Step 10: Fix primary key if missing
 ALTER TABLE inventory_items ADD PRIMARY KEY (id);
 
 -- Step 11: pglogical schema permissions
-GRANT USAGE ON SCHEMA pglogical TO migration_admin;
-GRANT ALL ON SCHEMA pglogical TO migration_admin;
-GRANT SELECT ON pglogical.tables TO migration_admin;
-GRANT SELECT ON pglogical.depend TO migration_admin;
-GRANT SELECT ON pglogical.local_node TO migration_admin;
-GRANT SELECT ON pglogical.local_sync_status TO migration_admin;
-GRANT SELECT ON pglogical.node TO migration_admin;
-GRANT SELECT ON pglogical.node_interface TO migration_admin;
-GRANT SELECT ON pglogical.queue TO migration_admin;
-GRANT SELECT ON pglogical.replication_set TO migration_admin;
-GRANT SELECT ON pglogical.replication_set_seq TO migration_admin;
-GRANT SELECT ON pglogical.replication_set_table TO migration_admin;
-GRANT SELECT ON pglogical.sequence_state TO migration_admin;
-GRANT SELECT ON pglogical.subscription TO migration_admin;
+GRANT USAGE ON SCHEMA pglogical TO replication_user;
+GRANT ALL ON SCHEMA pglogical TO replication_user;
+GRANT SELECT ON pglogical.tables TO replication_user;
+GRANT SELECT ON pglogical.depend TO replication_user;
+GRANT SELECT ON pglogical.local_node TO replication_user;
+GRANT SELECT ON pglogical.local_sync_status TO replication_user;
+GRANT SELECT ON pglogical.node TO replication_user;
+GRANT SELECT ON pglogical.node_interface TO replication_user;
+GRANT SELECT ON pglogical.queue TO replication_user;
+GRANT SELECT ON pglogical.replication_set TO replication_user;
+GRANT SELECT ON pglogical.replication_set_seq TO replication_user;
+GRANT SELECT ON pglogical.replication_set_table TO replication_user;
+GRANT SELECT ON pglogical.sequence_state TO replication_user;
+GRANT SELECT ON pglogical.subscription TO replication_user;
 
 -- Step 11: public schema permissions
-GRANT USAGE ON SCHEMA public TO migration_admin;
-GRANT ALL ON SCHEMA public TO migration_admin;
-GRANT SELECT ON public.distribution_centers TO migration_admin;
-GRANT SELECT ON public.inventory_items TO migration_admin;
-GRANT SELECT ON public.order_items TO migration_admin;
-GRANT SELECT ON public.products TO migration_admin;
-GRANT SELECT ON public.users TO migration_admin;
+GRANT USAGE ON SCHEMA public TO replication_user;
+GRANT ALL ON SCHEMA public TO replication_user;
+GRANT SELECT ON public.distribution_centers TO replication_user;
+GRANT SELECT ON public.inventory_items TO replication_user;
+GRANT SELECT ON public.order_items TO replication_user;
+GRANT SELECT ON public.products TO replication_user;
+GRANT SELECT ON public.users TO replication_user;
 
 -- Step 11: Transfer table ownership
-ALTER TABLE public.distribution_centers OWNER TO migration_admin;
-ALTER TABLE public.inventory_items OWNER TO migration_admin;
-ALTER TABLE public.order_items OWNER TO migration_admin;
-ALTER TABLE public.products OWNER TO migration_admin;
-ALTER TABLE public.users OWNER TO migration_admin;
+ALTER TABLE public.distribution_centers OWNER TO replication_user;
+ALTER TABLE public.inventory_items OWNER TO replication_user;
+ALTER TABLE public.order_items OWNER TO replication_user;
+ALTER TABLE public.products OWNER TO replication_user;
+ALTER TABLE public.users OWNER TO replication_user;
 ```
 
 ### Block 2 - Run inside `postgres` database
@@ -459,20 +459,20 @@ Open with: `sudo -u postgres psql` then `\c postgres`
 
 ```sql
 -- Step 12: pglogical schema permissions in postgres db
-GRANT USAGE ON SCHEMA pglogical TO migration_admin;
-GRANT ALL ON SCHEMA pglogical TO migration_admin;
-GRANT SELECT ON pglogical.tables TO migration_admin;
-GRANT SELECT ON pglogical.depend TO migration_admin;
-GRANT SELECT ON pglogical.local_node TO migration_admin;
-GRANT SELECT ON pglogical.local_sync_status TO migration_admin;
-GRANT SELECT ON pglogical.node TO migration_admin;
-GRANT SELECT ON pglogical.node_interface TO migration_admin;
-GRANT SELECT ON pglogical.queue TO migration_admin;
-GRANT SELECT ON pglogical.replication_set TO migration_admin;
-GRANT SELECT ON pglogical.replication_set_seq TO migration_admin;
-GRANT SELECT ON pglogical.replication_set_table TO migration_admin;
-GRANT SELECT ON pglogical.sequence_state TO migration_admin;
-GRANT SELECT ON pglogical.subscription TO migration_admin;
+GRANT USAGE ON SCHEMA pglogical TO replication_user;
+GRANT ALL ON SCHEMA pglogical TO replication_user;
+GRANT SELECT ON pglogical.tables TO replication_user;
+GRANT SELECT ON pglogical.depend TO replication_user;
+GRANT SELECT ON pglogical.local_node TO replication_user;
+GRANT SELECT ON pglogical.local_sync_status TO replication_user;
+GRANT SELECT ON pglogical.node TO replication_user;
+GRANT SELECT ON pglogical.node_interface TO replication_user;
+GRANT SELECT ON pglogical.queue TO replication_user;
+GRANT SELECT ON pglogical.replication_set TO replication_user;
+GRANT SELECT ON pglogical.replication_set_seq TO replication_user;
+GRANT SELECT ON pglogical.replication_set_table TO replication_user;
+GRANT SELECT ON pglogical.sequence_state TO replication_user;
+GRANT SELECT ON pglogical.subscription TO replication_user;
 ```
 
 ---
@@ -562,7 +562,7 @@ Click **CREATE PROFILE**
 | Connection profile name | Any (e.g. `postgresql-source`)  |
 | Hostname / IP           | INTERNAL IP from Step 14        |
 | Port                    | 5432                            |
-| Username                | `migration_admin`               |
+| Username                | `replication_user`               |
 | Password                | `DMS_1s_cool!`                  |
 | Region                  | Your lab region (e.g. us-west1) |
 
@@ -624,7 +624,7 @@ If it fails, check:
 - `listen_addresses = *`
 - `wal_level = logical`
 - `pglogical` is in `shared_preload_libraries`
-- `migration_admin` has all permissions (Steps 11 and 12)
+- `replication_user` has all permissions (Steps 11 and 12)
 - Port 5432 is accessible
 
 ---
@@ -871,7 +871,7 @@ Wait for it to complete (may take several minutes).
 
 | Item                  | Value                  |
 | --------------------- | ---------------------- |
-| Migration username    | `migration_admin`      |
+| Migration username    | `replication_user`      |
 | Migration password    | `DMS_1s_cool!`         |
 | Migration type        | Continuous             |
 | Destination type      | Existing instance      |
